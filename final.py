@@ -12,7 +12,7 @@ from sklearn.ensemble.weight_boosting import AdaBoostClassifier
 from sklearn.ensemble.forest import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.cross_validation import cross_val_score
 import glob
-from sklearn.tree import DecisionTreeClassifier
+from sklearn import tree
 import numpy as np
 from collections import Counter
 import pylab as pl
@@ -99,14 +99,16 @@ def organizeData(data1,data2):
     return np.array(X),np.array(y)
 """
 def classify(X,y,cv):
-    clf = DecisionTreeClassifier()
+    clf = tree.DecisionTreeClassifier()
+    clf = clf.fit(X,y)
 
     score = cross_val_score(clf, X, y, cv=cv)
     print '%s-fold cross validation accuracy: %s' % (cv,sum(score)/score.shape[0])
-    clf = clf.fit(X,y)
     
     preds = clf.predict(X)
+    return clf
 
+"""
     # The below measures are from Rob's GitHub code
     print 'Predictions Counter'
     print Counter(clf.predict(X))
@@ -133,16 +135,17 @@ def classify(X,y,cv):
     print 'False Positive Rate2 (fp)/(fp+tp):', float(fp)/(fp+tp)
     print 'Prediction Accuracy: %s%s' % (100*float(tp+tn)/(tp+tn+fp+fn),'%') 
     return clf
-
+"""
 
 # Running the above components
+
+# import CSVs as numpy arrays
 
 classes = []
 features = []
 
 print 'Loading Data...'
-#data1= loadData(features)
-#data2= loadData(classes)
+
 with open('classes.csv','rU') as csv_file_object:
     reader = csv.reader(csv_file_object)
     for row in reader:
@@ -173,6 +176,8 @@ y = classes
 print 'Training Classifier...'
 
 clf=classify(features,classes,cv)
+print clf.predict([0,0,1,38,31,85,22,15,0.08])
+
 print 'Training Complete.'
 
 

@@ -1,0 +1,84 @@
+
+print 'Importing required modules...'
+import csv as csv
+import os
+import json
+import time
+import random
+import numpy as np
+from sklearn import cross_validation
+import glob
+from sklearn import tree
+from sklearn import datasets
+from sklearn import svm
+print '...module imports complete.\n'
+from sklearn.externals.six import StringIO
+#import pydot
+from StringIO import StringIO
+"""
+#___Import CSV files as numpy arrays___
+print 'Loading data...'
+
+features = []
+classes = []
+
+with open('classes.csv','rU') as csv_file_object:
+    reader = csv.reader(csv_file_object)
+    for row in reader:
+        classes.append(row)
+
+classes = np.array(classes)
+
+with open('features.csv','rU') as csv_file_object:
+    reader = csv.reader(csv_file_object)
+    for row in reader:
+        features.append(row)
+
+features = np.array(features)
+
+print '...loading data complete.\n'
+
+
+#___Train the classifier___
+print 'Training classifier...'
+
+clf = tree.DecisionTreeClassifier()
+
+X_train, X_test, y_train, y_test = cross_validation.train_test_split(features, classes, test_size=0.4, random_state=0)
+print X_train.shape
+print X_test.shape
+print y_train.shape
+print y_test.shape
+
+clf = clf.fit(X_train,y_train)
+
+print '...classifier training complete.\n'
+
+#___Test the classifier___
+accuracy = clf.score(X_test, y_test)
+print 'Accuracy: %s' %accuracy
+
+#___Print the tree___
+out = StringIO()
+out = tree.export_graphviz(clf, out_file=out)
+print out.getvalue()
+#dot -Tpng tree.dot -o tree.png
+"""
+import StringIO
+#from sklearn.externals.six import StringIO  
+import pydot 
+from sklearn.datasets import load_iris
+from sklearn import tree
+iris = load_iris()
+clf = tree.DecisionTreeClassifier()
+clf = clf.fit(iris.data, iris.target)
+#with open("iris.dot", 'w') as f:
+#    f = tree.export_graphviz(clf, out_file=f)
+#import os
+#os.unlink('iris.dot')
+
+dot_data = StringIO.StringIO() 
+tree.export_graphviz(clf, out_file=dot_data) 
+graph = pydot.graph_from_dot_data(dot_data.getvalue()) 
+print dir(graph)
+graph.write_png("iris.png") 
