@@ -12,10 +12,7 @@ from sklearn import tree
 from sklearn import datasets
 from sklearn import svm
 print '...module imports complete.\n'
-from sklearn.externals.six import StringIO
-#import pydot
-from StringIO import StringIO
-"""
+
 #___Import CSV files as numpy arrays___
 print 'Loading data...'
 
@@ -58,22 +55,28 @@ print '...classifier training complete.\n'
 accuracy = clf.score(X_test, y_test)
 print 'Accuracy: %s' %accuracy
 
+"""
+#NO LONGER PRINTING THE TREE, PER OUR CONVERSATION IN CLASS.
 #___Print the tree___
-out = StringIO()
+out = StringIO.StringIO()
 out = tree.export_graphviz(clf, out_file=out)
 print out.getvalue()
-#dot -Tpng tree.dot -o tree.png
-"""
+out.write_png("tree.png")
+
+#THIS PORTION BELOW IS FROM WHEN WE WERE TRYING TO INSTALL PYDOT. NOT A RELEVANT PART OF MY FINAL PROJECT.
 import StringIO
 #from sklearn.externals.six import StringIO  
 import pydot 
 from sklearn.datasets import load_iris
 from sklearn import tree
+
 iris = load_iris()
 clf = tree.DecisionTreeClassifier()
 clf = clf.fit(iris.data, iris.target)
+
 with open("iris.dot", 'w') as f:
     f = tree.export_graphviz(clf, out_file=f)
+
 import os
 os.unlink('iris.dot')
 
@@ -82,3 +85,4 @@ tree.export_graphviz(clf, out_file=dot_data)
 graph = pydot.graph_from_dot_data(dot_data.getvalue()) 
 print dir(graph)
 graph.write_png("iris.png") 
+"""
